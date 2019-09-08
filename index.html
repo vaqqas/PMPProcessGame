@@ -121,7 +121,7 @@
                         case 5:
                             phaseName ="Closing";break;
                     }                    
-                    var row = '<div class="row"><div class="col-xs-6 cell">'+wa.name+'</div><div class="col-xs-6 cell">'+phaseName+'</div></div>'
+                    var row = '<div class="row normalrow"><div class="col-xs-6 cell">'+wa.name+'</div><div class="col-xs-6 cell">'+phaseName+'</div></div>'
                     $("#weakAreaGrid").append(row);
                 });
         }
@@ -198,18 +198,21 @@
 
         .headerrow{
             font-size: large;
-            font-weight: bold;
             color: white;
             background-color: gray;
-            border-style: solid;
             border-color: lightgray;
             border-width: 1px;
+            border-top-style: solid;
+        }
+
+        .normalrow{
+            border-color: lightgray;
+            border-width: 1px;
+            border-top-style: solid;
         }
 
         .cell{
-            border-style: solid;
-            border-color: lightgray;
-            border-width: 1px;
+            vertical-align: middle;
         }
     </style>
 <header>
@@ -247,7 +250,7 @@
         <span class="label label-default">Sound:</span>
         <input id="checkBoxSound" type="checkbox" checked data-toggle="toggle" data-width="75" data-height="45">
         <button id="btnRestart" type="button" onclick="restart()" class="btn btn-warning btn-lg">Restart Game</button>
-        <!-- <button id="btnRestart" type="button" onclick="showWeakAreasGrid()" class="btn btn-warning btn-lg">Show Weak Areas</button> -->
+        <!-- <button id="btnShowWeakArea" type="button" onclick="showWeakAreasGrid()" class="btn btn-warning btn-lg">Show Weak Areas</button> -->
         <!-- <button id="btnExit" type="button" onclick="exit()" class="btn btn-danger btn-lg">Exit</button> -->
     </div>
 
