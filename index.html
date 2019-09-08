@@ -35,6 +35,7 @@
             setCount(count);
             setScore(score);
             nextActivity();
+            $("#weakAreaGrid").empty();
         }
 
         function setScore(score){
@@ -96,7 +97,8 @@
                 else {
                     msg = "Needs more effort! Scroll down to know your weak areas.";
                 }
-                $("#activity").text(msg);                
+                $("#activity").text(msg);     
+                showWeakAreasGrid();           
             }
         }
 
@@ -149,8 +151,6 @@
                         $("#activity").css("color", "red");
                     }
                 }
-
-                showWeakAreasGrid();
             }
             catch(e){
                 alert(e);
@@ -247,6 +247,7 @@
         <span class="label label-default">Sound:</span>
         <input id="checkBoxSound" type="checkbox" checked data-toggle="toggle" data-width="75" data-height="45">
         <button id="btnRestart" type="button" onclick="restart()" class="btn btn-warning btn-lg">Restart Game</button>
+        <!-- <button id="btnRestart" type="button" onclick="showWeakAreasGrid()" class="btn btn-warning btn-lg">Show Weak Areas</button> -->
         <!-- <button id="btnExit" type="button" onclick="exit()" class="btn btn-danger btn-lg">Exit</button> -->
     </div>
 
