@@ -42,12 +42,12 @@ activities =[
 ,{name:"Execute work according to the project management plan",phase:3,seq:0}
 ,{name:"Produce product deliverables (product scope)",phase:3,seq:0}
 ,{name:"Gather work performance data",phase:3,seq:0}
-,{name:"Request changes",phase:3,seq:0}
+,{name:"Request changes-3",phase:3,seq:0}
 ,{name:"Implement only approved changes",phase:3,seq:0}
 ,{name:"Continuously improve; perform progressive elaboration",phase:3,seq:0}
 ,{name:"Follow processes",phase:3,seq:0}
 ,{name:"Determine whether quality plan and processes are correct and effective",phase:3,seq:0}
-,{name:"Performa quality audits and issue quality report",phase:3,seq:0}
+,{name:"Perform quality audits and issue quality report",phase:3,seq:0}
 ,{name:"Acquire final team and physical resources",phase:3,seq:0}
 ,{name:"Manage people",phase:3,seq:0}
 ,{name:"Evaluate team and individual performance; provide training",phase:3,seq:0}
