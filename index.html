@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>PMP Process Game</title>
+</head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -144,16 +147,20 @@
                 //do nothing
                 }
                 else if(currentActivity.phase == phase) {
+                    playSound('tick');
                     correctAnswers++;
                     calcScore();
                     increaseCount();
                     nextActivity();
                 }
-                else if(newActivity)
+                else 
                 {
-                    wrongAnswers++;
-                    calcScore();
-                    newActivity = false;
+                    playSound('buzz');
+                    if(newActivity){
+                        wrongAnswers++;
+                        calcScore();
+                        newActivity = false;
+                    }
                 }
             }
             catch(e){
@@ -166,6 +173,10 @@
                 start();
         }
 
+        function playSound(filename){
+            var audio = new Audio('./sounds/'+filename+'.mp3');
+            audio.play();
+        }
     </script>
 
     <style>
@@ -221,9 +232,8 @@
     <div class="container-fluid">
         <div id="activity" class="well well-lg"></div>
     </div>
-
     <div id="processes" class="container-fluid" >
-        <h3><span class="label label-default">Select the correct Process:</span></h3>
+        <h3><span class="label label-default">Select the correct Process group for the above activity:</span></h3>
         <button id="btnInitiation" type="button" onclick="selectProcess(1)" class="btn btn-primary btn-block btn-lg">INITIATING</button>
         <button id="btnPlanning" type="button" onclick="selectProcess(2)" class="btn btn-primary btn-block btn-lg">PLANNING</button>
         <button id="btnExecuting" type="button" onclick="selectProcess(3)" class="btn btn-primary btn-block btn-lg">EXECUTING</button>
@@ -238,6 +248,8 @@
         <button id="btnExit" type="button" onclick="exit()" class="btn btn-danger btn-lg">Exit</button>
     </div>
 </footer>
+
+<div id="sound"></div>
 
 </body>
 </html>
