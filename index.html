@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="./loadActivities.js"></script>
+
+    <script>
+        var activities;
+        var currentActivity;
+        var count;
+        var score;
+        var maxCount;
+        var correctAnswers;
+        var wrongAnswers;
+        var newActivity;
+
+        function start(){
+            loadActivities();           
+            maxCount = activities.length;
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            count = 1;
+            score = 0
+            setCount(count);
+            setScore(score);
+            nextActivity();
+        }
+
+        function setScore(score){
+            var lblCount = $("#lblScore")
+            lblCount.text("Score: " + score + "%");
+            lblCount.removeClass();
+            if(score >= 75){
+                lblCount.addClass("label label-success");
+            }
+            else if( score > 65 && score < 75){
+                lblCount.addClass("label label-warning");
+            }
+            else {
+                lblCount.addClass("label label-danger");
+            }
+        }
+
+        function setCount(c){
+            $("#activityCount").text("Activity (" + count + " of " + maxCount + "):");
+        }
+
+        function increaseCount(){
+            if( count < maxCount)
+            {
+                count++;
+                setCount(count);
+            }
+        }
+
+        function calcScore(){
+            score = ((correctAnswers - wrongAnswers) / maxCount ) * 100;
+            score = score.toFixed(2);
+            setScore(score);
+        }
+
+        $(document).ready(function () {
+            start();
+        });
+
+        function nextActivity() {
+            var i = Math.floor(Math.random() * activities.length);
+            if( i < activities.length && activities[i] != NaN){
+                currentActivity = activities[i];
+                activities.splice(i,1);
+                $("#activity").text(currentActivity.name);
+                newActivity = true;
+
+                //nutralize all the options
+                $("#btnInitiation").removeClass("btn-wrong btn-correct");
+                $("#btnPlanning").removeClass("btn-wrong btn-correct");
+                $("#btnExecuting").removeClass("btn-wrong btn-correct");
+                $("#btnMonitoringAndControl").removeClass("btn-wrong btn-correct");
+                $("#btnClosing").removeClass("btn-wrong btn-correct");
+
+                switch(currentActivity.phase)
+                {
+                    case 1:
+                        $("#btnInitiation").addClass("btn-correct");
+                        $("#btnPlanning").addClass("btn-wrong");
+                        $("#btnExecuting").addClass("btn-wrong");
+                        $("#btnMonitoringAndControl").addClass("btn-wrong");
+                        $("#btnClosing").addClass("btn-wrong");
+                        break;
+                    case 2:
+                        $("#btnInitiation").addClass("btn-wrong");
+                        $("#btnPlanning").addClass("btn-correct");
+                        $("#btnExecuting").addClass("btn-wrong");
+                        $("#btnMonitoringAndControl").addClass("btn-wrong");
+                        $("#btnClosing").addClass("btn-wrong");
+                        break;
+                    case 3:
+                        $("#btnInitiation").addClass("btn-wrong");
+                        $("#btnPlanning").addClass("btn-wrong");
+                        $("#btnExecuting").addClass("btn-correct");
+                        $("#btnMonitoringAndControl").addClass("btn-wrong");
+                        $("#btnClosing").addClass("btn-wrong");
+                        break;
+                    case 4:
+                        $("#btnInitiation").addClass("btn-wrong");
+                        $("#btnPlanning").addClass("btn-wrong");
+                        $("#btnExecuting").addClass("btn-wrong");
+                        $("#btnMonitoringAndControl").addClass("btn-correct");
+                        $("#btnClosing").addClass("btn-wrong");
+                        break;
+                    case 5:
+                        $("#btnInitiation").addClass("btn-wrong");
+                        $("#btnPlanning").addClass("btn-wrong");
+                        $("#btnExecuting").addClass("btn-wrong");
+                        $("#btnMonitoringAndControl").addClass("btn-wrong");
+                        $("#btnClosing").addClass("btn-correct");
+                        break;
+                }                
+            }
+            else
+            {
+                currentActivity = null;
+                var msg;
+                if(score >= 80){
+                    msg = "Congratulations. You passed!";
+                }
+                else if( score > 65 && score < 80){
+                    msg = "Needs improvement! A lil more effort to pass";
+                }
+                else {
+                    msg = "Go through the process chart and keep trying till you pass.";
+                }
+                $("#activity").text(msg);
+            }
+        }
+
+        function selectProcess(phase) {
+            try
+            {
+                if (currentActivity == null){
+                //do nothing
+                }
+                else if(currentActivity.phase == phase) {
+                    correctAnswers++;
+                    calcScore();
+                    increaseCount();
+                    nextActivity();
+                }
+                else if(newActivity)
+                {
+                    wrongAnswers++;
+                    calcScore();
+                    newActivity = false;
+                }
+            }
+            catch(e){
+                alert(e);
+            }
+        }
+
+        function restart(){
+            if( confirm("Are you sure you wish to restart?"))
+                start();
+        }
+
+    </script>
+
+    <style>
+        .btn.btn-primary.btn-correct:active{
+            color: white;
+            background-color: #4CAF50;
+            border-color: #5cb85c;
+            outline: none;
+        }
+
+        .btn.btn-primary.btn-wrong:active{
+            color: white;
+            background-color: red;
+            border-color: #5cb85c;
+            outline: none;
+        }
+
+        .btn-correct:active {
+            background-color: red;
+        }
+
+        .well{
+            font-weight: bold;
+            text-align: center;
+            color: brown;
+        }
+    </style>
+<header>
+    <div class="jumbotron text-center">
+        <h1>PMP Process Game</h1>
+    </div>
+</header>
+
+<nav>
+    <div class="container-fluid">
+        <div class="row">            
+            <div class="col-xs-6 text-left">
+                <h3><span id="activityCount" class="label label-default">Activity:</span></h3>
+            </div>
+            <div class="col-xs-6 text-right">
+                <h3><span id="lblScore" class="label label-danger">Score: 0%</span></h3>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section>
+    <div class="container-fluid">
+        <div id="activity" class="well well-lg"></div>
+    </div>
+
+    <div id="processes" class="container-fluid" >
+        <h3><span class="label label-default">Select the correct Process:</span></h3>
+        <button id="btnInitiation" type="button" onclick="selectProcess(1)" class="btn btn-primary btn-block btn-lg">INITIATING</button>
+        <button id="btnPlanning" type="button" onclick="selectProcess(2)" class="btn btn-primary btn-block btn-lg">PLANNING</button>
+        <button id="btnExecuting" type="button" onclick="selectProcess(3)" class="btn btn-primary btn-block btn-lg">EXECUTING</button>
+        <button id="btnMonitoringAndControl" type="button" onclick="selectProcess(4)" class="btn btn-primary btn-block btn-lg">MONITORING AND CONTROL</button>
+        <button id="btnClosing" type="button" onclick="selectProcess(5)" class="btn btn-primary btn-block btn-lg">CLOSING</button>
+    </div>
+</section>
+
+<footer style="padding-top: 10px; text-align: right;">
+    <div id="footer" class="container-fluid text-right">
+        <button id="btnRestart" type="button" onclick="restart()" class="btn btn-warning btn-lg">Restart</button>
+        <button id="btnExit" type="button" onclick="exit()" class="btn btn-danger btn-lg">Exit</button>
+    </div>
+</footer>
+
+</body>
+</html>
