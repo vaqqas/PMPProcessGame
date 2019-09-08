@@ -74,59 +74,60 @@
             if( i < activities.length && activities[i] != NaN){
                 currentActivity = activities[i];
                 activities.splice(i,1);
+                $("#activity").css("color", "black");
                 $("#activity").text(currentActivity.name);
                 newActivity = true;
 
                 //nutralize all the options
-                $("#btnInitiation").removeClass();
-                $("#btnPlanning").removeClass();
-                $("#btnExecuting").removeClass();
-                $("#btnMonitoringAndControl").removeClass();
-                $("#btnClosing").removeClass();
+                // $("#btnInitiation").removeClass();
+                // $("#btnPlanning").removeClass();
+                // $("#btnExecuting").removeClass();
+                // $("#btnMonitoringAndControl").removeClass();
+                // $("#btnClosing").removeClass();
                 // $("#btnInitiation").removeClass("btn-wrong btn-correct");
                 // $("#btnPlanning").removeClass("btn-wrong btn-correct");
                 // $("#btnExecuting").removeClass("btn-wrong btn-correct");
                 // $("#btnMonitoringAndControl").removeClass("btn-wrong btn-correct");
                 // $("#btnClosing").removeClass("btn-wrong btn-correct");
 
-                switch(currentActivity.phase)
-                {
-                    case 1:
-                        $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                        $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        break;
-                    case 2:
-                        $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                        $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        break;
-                    case 3:
-                        $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                        $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        break;
-                    case 4:
-                        $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                        $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        break;
-                    case 5:
-                        $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                        $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                        break;
-                }                
+                // switch(currentActivity.phase)
+                // {
+                //     case 1:
+                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-correct");
+                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         break;
+                //     case 2:
+                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-correct");
+                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         break;
+                //     case 3:
+                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-correct");
+                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         break;
+                //     case 4:
+                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-correct");
+                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         break;
+                //     case 5:
+                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
+                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-correct");
+                //         break;
+                // }                
             }
             else
             {
@@ -156,7 +157,8 @@
                     correctAnswers++;
                     calcScore();
                     increaseCount();
-                    nextActivity();
+                    $("#activity").css("color", "green");
+                    setTimeout(nextActivity, 1000);
                 }
                 else 
                 {
@@ -165,6 +167,7 @@
                         wrongAnswers++;
                         calcScore();
                         newActivity = false;
+                        $("#activity").css("color", "red");
                     }
                 }
             }
@@ -204,10 +207,9 @@
         }
 
         .well{
-            font-size: Large;
+            font-size: large;
             font-weight: bold;
             text-align: center;
-            color: brown;
             height: 100px;
             /* background-color: lightgray;
             height: 500px;
