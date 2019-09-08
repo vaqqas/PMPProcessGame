@@ -9,6 +9,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <script src="./loadActivities.js"></script>
+    <link rel="stylesheet" href="material-switch.css" >
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
     <script>
         var activities;
@@ -19,9 +22,11 @@
         var correctAnswers;
         var wrongAnswers;
         var newActivity;
+        var weakAreas;
 
         function start(){
-            loadActivities();           
+            loadActivities();      
+            weakAreas = new Array();     
             maxCount = activities.length;
             correctAnswers = 0;
             wrongAnswers = 0;
@@ -77,57 +82,6 @@
                 $("#activity").css("color", "black");
                 $("#activity").text(currentActivity.name);
                 newActivity = true;
-
-                //nutralize all the options
-                // $("#btnInitiation").removeClass();
-                // $("#btnPlanning").removeClass();
-                // $("#btnExecuting").removeClass();
-                // $("#btnMonitoringAndControl").removeClass();
-                // $("#btnClosing").removeClass();
-                // $("#btnInitiation").removeClass("btn-wrong btn-correct");
-                // $("#btnPlanning").removeClass("btn-wrong btn-correct");
-                // $("#btnExecuting").removeClass("btn-wrong btn-correct");
-                // $("#btnMonitoringAndControl").removeClass("btn-wrong btn-correct");
-                // $("#btnClosing").removeClass("btn-wrong btn-correct");
-
-                // switch(currentActivity.phase)
-                // {
-                //     case 1:
-                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         break;
-                //     case 2:
-                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         break;
-                //     case 3:
-                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         break;
-                //     case 4:
-                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         break;
-                //     case 5:
-                //         $("#btnInitiation").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnPlanning").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnExecuting").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnMonitoringAndControl").addClass("btn btn-primary btn-block btn-lg btn-wrong");
-                //         $("#btnClosing").addClass("btn btn-primary btn-block btn-lg btn-correct");
-                //         break;
-                // }                
             }
             else
             {
@@ -137,13 +91,37 @@
                     msg = "Congratulations. You passed!";
                 }
                 else if( score > 65 && score < 80){
-                    msg = "Needs improvement! A lil more effort to pass";
+                    msg = "Needs improvement! Scroll down to know your weak areas.";
                 }
                 else {
-                    msg = "Go through the process chart and keep trying till you pass.";
+                    msg = "Needs more effort! Scroll down to know your weak areas.";
                 }
-                $("#activity").text(msg);
+                $("#activity").text(msg);                
             }
+        }
+
+        function showWeakAreasGrid(){
+            //create the weak areas grid
+            $("#weakAreaGrid").empty();
+            var row = '<div class="row headerrow"><div class="col-xs-6 cell">Activity</div><div class="col-xs-6 cell">Process Group</div></div>'
+            $("#weakAreaGrid").append(row);
+                weakAreas.forEach(wa => {
+                    var phaseName = "NA";
+                    switch(wa.phase){
+                        case 1:
+                            phaseName ="Initiating";break;
+                        case 2:
+                            phaseName ="Planning";break;
+                        case 3:
+                            phaseName ="Executing";break;
+                        case 4:
+                            phaseName ="Monitoring And Control";break;
+                        case 5:
+                            phaseName ="Closing";break;
+                    }                    
+                    var row = '<div class="row"><div class="col-xs-6 cell">'+wa.name+'</div><div class="col-xs-6 cell">'+phaseName+'</div></div>'
+                    $("#weakAreaGrid").append(row);
+                });
         }
 
         function selectProcess(phase) {
@@ -158,18 +136,21 @@
                     calcScore();
                     increaseCount();
                     $("#activity").css("color", "green");
-                    setTimeout(nextActivity, 1000);
+                    setTimeout(nextActivity, 500);
                 }
                 else 
                 {
                     playSound('buzz');
                     if(newActivity){
                         wrongAnswers++;
+                        weakAreas.push(currentActivity);
                         calcScore();
                         newActivity = false;
                         $("#activity").css("color", "red");
                     }
                 }
+
+                showWeakAreasGrid();
             }
             catch(e){
                 alert(e);
@@ -182,8 +163,10 @@
         }
 
         function playSound(filename){
-            var audio = new Audio('./sounds/'+filename+'.mp3');
-            audio.play();
+            if( $("#checkBoxSound").is(":checked")){
+                var audio = new Audio('./sounds/'+filename+'.mp3');
+                audio.play();
+            }
         }
     </script>
 
@@ -211,9 +194,22 @@
             font-weight: bold;
             text-align: center;
             height: 100px;
-            /* background-color: lightgray;
-            height: 500px;
-            width: 100%; */
+        }
+
+        .headerrow{
+            font-size: large;
+            font-weight: bold;
+            color: white;
+            background-color: gray;
+            border-style: solid;
+            border-color: lightgray;
+            border-width: 1px;
+        }
+
+        .cell{
+            border-style: solid;
+            border-color: lightgray;
+            border-width: 1px;
         }
     </style>
 <header>
@@ -247,16 +243,22 @@
         <button id="btnMonitoringAndControl" type="button" onclick="selectProcess(4)" class="btn btn-primary btn-block btn-lg">MONITORING AND CONTROL</button>
         <button id="btnClosing" type="button" onclick="selectProcess(5)" class="btn btn-primary btn-block btn-lg">CLOSING</button>
     </div>
+    <div id="controls" class="container-fluid text-right" style="padding-top: 10px; text-align: right;">
+        <span class="label label-default">Sound:</span>
+        <input id="checkBoxSound" type="checkbox" checked data-toggle="toggle" data-width="75" data-height="45">
+        <button id="btnRestart" type="button" onclick="restart()" class="btn btn-warning btn-lg">Restart Game</button>
+        <!-- <button id="btnExit" type="button" onclick="exit()" class="btn btn-danger btn-lg">Exit</button> -->
+    </div>
+
+    <div class="container-fluid">
+        <h3><span class="label label-default">Weak Areas:</span></h3>
+        <div id="weakAreaGrid" style="margin-left: 20px; margin-right: 20px;"></div>
+    </div>
 </section>
 
 <footer style="padding-top: 10px; text-align: right;">
-    <div id="footer" class="container-fluid text-right">
-        <button id="btnRestart" type="button" onclick="restart()" class="btn btn-warning btn-lg">Restart</button>
-        <button id="btnExit" type="button" onclick="exit()" class="btn btn-danger btn-lg">Exit</button>
-    </div>
+        
 </footer>
-
-<div id="sound"></div>
 
 </body>
 </html>

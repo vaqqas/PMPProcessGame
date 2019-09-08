@@ -70,7 +70,7 @@ activities =[
 ,{name:"Determine if variances warrant a corrective action or other change request(s)",phase:4,seq:0}
 ,{name:"Influence factors that cause change",phase:4,seq:0}
 ,{name:"Request changes - 4",phase:4,seq:0}
-,{name:"Performa integrated change control",phase:4,seq:0}
+,{name:"Perform integrated change control",phase:4,seq:0}
 ,{name:"Approve or reject changes",phase:4,seq:0}
 ,{name:"Update project management plan and project documents",phase:4,seq:0}
 ,{name:"Inform stakeholders of all change request results",phase:4,seq:0}
