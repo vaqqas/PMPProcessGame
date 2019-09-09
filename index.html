@@ -7,11 +7,10 @@
 <body>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script src="./loadActivities.js"></script>
-    <link rel="stylesheet" href="material-switch.css" >
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>    
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="./loadActivities.js"></script>
 
     <script>
         var activities;
@@ -23,6 +22,9 @@
         var wrongAnswers;
         var newActivity;
         var weakAreas;
+        var scoreRange1 = 70;
+        var scoreRange2 = 80;
+        var gameFinished = false;
 
         function start(){
             loadActivities();      
@@ -35,17 +37,20 @@
             setCount(count);
             setScore(score);
             nextActivity();
+            $("#weakAreaSection").hide();
+            $("#responseSection").show();
             $("#weakAreaGrid").empty();
+            gameFinished = false;
         }
 
         function setScore(score){
             var lblCount = $("#lblScore")
             lblCount.text("Score: " + score + "%");
             lblCount.removeClass();
-            if(score >= 75){
+            if(score >= scoreRange2){
                 lblCount.addClass("label label-success");
             }
-            else if( score > 65 && score < 75){
+            else if( score >= scoreRange1 && score < scoreRange2){
                 lblCount.addClass("label label-warning");
             }
             else {
@@ -66,7 +71,7 @@
         }
 
         function calcScore(){
-            score = ((correctAnswers - wrongAnswers) / maxCount ) * 100;
+            score = (correctAnswers / maxCount ) * 100;
             score = score.toFixed(2);
             setScore(score);
         }
@@ -88,17 +93,20 @@
             {
                 currentActivity = null;
                 var msg;
-                if(score >= 80){
-                    msg = "Congratulations. You passed!";
+                if(score >= scoreRange2){
+                    msg = "Congratulations. You passed!. Check your weak areas below.";
                 }
-                else if( score > 65 && score < 80){
-                    msg = "Needs improvement! Scroll down to know your weak areas.";
+                else if( score >= scoreRange1 && score < scoreRange2){
+                    msg = "Needs improvement! Check your weak areas below.";
                 }
                 else {
-                    msg = "Needs more effort! Scroll down to know your weak areas.";
+                    msg = "Needs more effort! Check your weak areas below.";
                 }
-                $("#activity").text(msg);     
-                showWeakAreasGrid();           
+                $("#activity").text(msg);   
+                $("#weakAreaSection").show();
+                $("#responseSection").hide();  
+                showWeakAreasGrid();     
+                gameFinished = true;      
             }
         }
 
@@ -107,23 +115,28 @@
             $("#weakAreaGrid").empty();
             var row = '<div class="row headerrow"><div class="col-xs-6 cell">Activity</div><div class="col-xs-6 cell">Process Group</div></div>'
             $("#weakAreaGrid").append(row);
-                weakAreas.forEach(wa => {
-                    var phaseName = "NA";
-                    switch(wa.phase){
-                        case 1:
-                            phaseName ="Initiating";break;
-                        case 2:
-                            phaseName ="Planning";break;
-                        case 3:
-                            phaseName ="Executing";break;
-                        case 4:
-                            phaseName ="Monitoring And Control";break;
-                        case 5:
-                            phaseName ="Closing";break;
-                    }                    
-                    var row = '<div class="row normalrow"><div class="col-xs-6 cell">'+wa.name+'</div><div class="col-xs-6 cell">'+phaseName+'</div></div>'
-                    $("#weakAreaGrid").append(row);
-                });
+            weakAreas.forEach(wa => {
+                var phaseName = getPhaseName(wa.phase);                           
+                var row = '<div class="row normalrow"><div class="col-xs-6 cell">'+wa.name+'</div><div class="col-xs-6 cell">'+phaseName+'</div></div>';
+                $("#weakAreaGrid").append(row);
+            });
+        }
+
+        function getPhaseName(phaseNo){
+            switch(phaseNo){
+                case 1:
+                    return "Initiating";
+                case 2:
+                    return "Planning";
+                case 3:
+                    return "Executing";
+                case 4:
+                    return "Monitoring And Control";
+                case 5:
+                    return "Closing";
+                default:
+                    return "Unknown";
+            }          
         }
 
         function selectProcess(phase) {
@@ -134,8 +147,10 @@
                 }
                 else if(currentActivity.phase == phase) {
                     playSound('tick');
-                    correctAnswers++;
-                    calcScore();
+                    if(newActivity){
+                        correctAnswers++;
+                        calcScore();
+                    }                    
                     increaseCount();
                     $("#activity").css("color", "green");
                     setTimeout(nextActivity, 500);
@@ -144,9 +159,9 @@
                 {
                     playSound('buzz');
                     if(newActivity){
-                        wrongAnswers++;
+                        //wrongAnswers++;
                         weakAreas.push(currentActivity);
-                        calcScore();
+                        //calcScore();
                         newActivity = false;
                         $("#activity").css("color", "red");
                     }
@@ -158,8 +173,14 @@
         }
 
         function restart(){
-            if( confirm("Are you sure you wish to restart?"))
+            if(gameFinished)
+            {
                 start();
+            }
+            else if(confirm("Are you sure you wish to restart?"))
+            {
+                start();
+            }
         }
 
         function playSound(filename){
@@ -189,11 +210,12 @@
             background-color: red;
         }
 
-        .well{
-            font-size: large;
-            font-weight: bold;
+        .well.well-lg{
             text-align: center;
             height: 100px;
+            font-size: medium;
+            font-weight: bold;
+            vertical-align: middle;
         }
 
         .headerrow{
@@ -218,6 +240,7 @@
 <header>
     <div class="jumbotron text-center">
         <h1>PMP Process Game</h1>
+        Based on PMBOK 6.0
     </div>
 </header>
 
@@ -234,11 +257,15 @@
     </div>
 </nav>
 
-<section>
+<section id="activitySection">
     <div class="container-fluid">
-        <div id="activity" class="well well-lg"></div>
+        <div id="activity" class="well well-lg">
+        </div>
     </div>
-    <div id="processes" class="container-fluid" >
+</section>
+
+<section id="responseSection">
+    <div class="container-fluid" >
         <h3><span class="label label-default">Select the correct Process group:</span></h3>
         <button id="btnInitiation" type="button" onclick="selectProcess(1)" class="btn btn-primary btn-block btn-lg">INITIATING</button>
         <button id="btnPlanning" type="button" onclick="selectProcess(2)" class="btn btn-primary btn-block btn-lg">PLANNING</button>
@@ -246,14 +273,17 @@
         <button id="btnMonitoringAndControl" type="button" onclick="selectProcess(4)" class="btn btn-primary btn-block btn-lg">MONITORING AND CONTROL</button>
         <button id="btnClosing" type="button" onclick="selectProcess(5)" class="btn btn-primary btn-block btn-lg">CLOSING</button>
     </div>
-    <div id="controls" class="container-fluid text-right" style="padding-top: 10px; text-align: right;">
+</section>
+<section id="controlsSection">
+    <div class="container-fluid text-right" style="padding-top: 10px; text-align: right;">
         <span class="label label-default">Sound:</span>
         <input id="checkBoxSound" type="checkbox" checked data-toggle="toggle" data-width="75" data-height="45">
         <button id="btnRestart" type="button" onclick="restart()" class="btn btn-warning btn-lg">Restart Game</button>
         <!-- <button id="btnShowWeakArea" type="button" onclick="showWeakAreasGrid()" class="btn btn-warning btn-lg">Show Weak Areas</button> -->
         <!-- <button id="btnExit" type="button" onclick="exit()" class="btn btn-danger btn-lg">Exit</button> -->
     </div>
-
+</section>
+<section id="weakAreaSection">
     <div class="container-fluid">
         <h3><span class="label label-default">Weak Areas:</span></h3>
         <div id="weakAreaGrid" style="margin-left: 20px; margin-right: 20px;"></div>
