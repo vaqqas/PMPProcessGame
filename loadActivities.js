@@ -1,7 +1,7 @@
 function loadActivities()
 {
-activities =[
-{name:"Select Project Manager",phase:1,seq:0}
+activities = [
+ {name:"Select Project Manager",phase:1,seq:0}
 ,{name:"Determine company culture and existing system",phase:1,seq:0}
 ,{name:"Collect processes, procedures and historical information",phase:1,seq:0}
 ,{name:"Divide large projects into phases or smaller projects",phase:1,seq:0}
@@ -11,7 +11,7 @@ activities =[
 ,{name:"Create measurable objectives and success criteria",phase:1,seq:0}
 ,{name:"Develop project charter",phase:1,seq:0}
 ,{name:"Identify stakeholders and determine their expectations, interest, influence, and impact",phase:1,seq:0}
-,{name:"Request Changes-1",phase:1,seq:0}
+,{name:"Request Changes - 1",phase:1,seq:0}
 ,{name:"Develop assumptions log",phase:1,seq:0}
 ,{name:"Develop stakeholder register",phase:1,seq:0}
 ,{name:"Determine development approach, lifecycle, and how you will plan for each knowledge area",phase:2,seq:1}
@@ -38,11 +38,11 @@ activities =[
 ,{name:"Develop realistic and sufficient project management plan and baseline",phase:2,seq:22}
 ,{name:"Gain formal approval of the plan",phase:2,seq:23}
 ,{name:"Hold kick-off meeting",phase:2,seq:24}
-,{name:"Request changes-2",phase:2,seq:25}
+,{name:"Request changes - 2",phase:2,seq:25}
 ,{name:"Execute work according to the project management plan",phase:3,seq:0}
 ,{name:"Produce product deliverables (product scope)",phase:3,seq:0}
 ,{name:"Gather work performance data",phase:3,seq:0}
-,{name:"Request changes-3",phase:3,seq:0}
+,{name:"Request changes - 3",phase:3,seq:0}
 ,{name:"Implement only approved changes",phase:3,seq:0}
 ,{name:"Continuously improve; perform progressive elaboration",phase:3,seq:0}
 ,{name:"Follow processes",phase:3,seq:0}
@@ -63,7 +63,7 @@ activities =[
 ,{name:"Evaluate sellers; negotiate and contract with sellers",phase:3,seq:0}
 ,{name:"Use and share project knowledge",phase:3,seq:0}
 ,{name:"Execute contingency plans",phase:3,seq:0}
-,{name:"Update project management plan and project documents",phase:3,seq:0}
+,{name:"Update project management plan and project documents - 1",phase:3,seq:0}
 ,{name:"Take action to monitor and control the project",phase:4,seq:0}
 ,{name:"Measure performance against performance measurement baseline",phase:4,seq:0}
 ,{name:"Measure performance against other metrics in the project management plan",phase:4,seq:0}
@@ -72,7 +72,7 @@ activities =[
 ,{name:"Request changes - 4",phase:4,seq:0}
 ,{name:"Perform integrated change control",phase:4,seq:0}
 ,{name:"Approve or reject changes",phase:4,seq:0}
-,{name:"Update project management plan and project documents",phase:4,seq:0}
+,{name:"Update project management plan and project documents - 2",phase:4,seq:0}
 ,{name:"Inform stakeholders of all change request results",phase:4,seq:0}
 ,{name:"Monitor stakeholder engagement",phase:4,seq:0}
 ,{name:"Confirm configuration compliance",phase:4,seq:0}

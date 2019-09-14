@@ -1,0 +1,44 @@
+.btn.btn-primary.btn-correct:active{
+    color: white;
+    background-color: #4CAF50;
+    border-color: #5cb85c;
+    outline: none;
+}
+
+.btn.btn-primary.btn-wrong:active{
+    color: white;
+    background-color: red;
+    border-color: #5cb85c;
+    outline: none;
+}
+
+.btn-correct:active {
+    background-color: red;
+}
+
+.well.well-lg{
+    text-align: center;
+    height: 100px;
+    font-size: medium;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.headerrow{
+    font-size: large;
+    color: white;
+    background-color: gray;
+    border-color: lightgray;
+    border-width: 1px;
+    border-top-style: solid;
+}
+
+.normalrow{
+    border-color: lightgray;
+    border-width: 1px;
+    border-top-style: solid;
+}
+
+.cell{
+    vertical-align: middle;
+}
