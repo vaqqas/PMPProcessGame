@@ -27,14 +27,16 @@
         var scoreRange1 = 70;
         var scoreRange2 = 80;
         var gameFinished = false;
-
+        var thisGame = 'game2';
         function start(game){
-            alert(game);
-            if( game = 'game1' ){
-                loadActivities();    
+            thisGame = game;
+            if( thisGame == 'game1' ){
+                //alert('Loading actions');
+                loadActions(); 
             }  
-            else{
-                loadActions();    
+            else{                  
+                //alert('Loading activities');
+                loadActivities(); 
             }
 
             weakAreas = new Array();     
@@ -86,7 +88,7 @@
         }
 
         $(document).ready(function () {
-            start();
+            start(thisGame);
         });
 
         function nextActivity() {
@@ -184,11 +186,11 @@
         function restart(){
             if(gameFinished)
             {
-                start();
+                start(thisGame);
             }
             else if(confirm("Are you sure you wish to restart?"))
             {
-                start();
+                start(thisGame);
             }
         }
 
