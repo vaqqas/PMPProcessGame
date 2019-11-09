@@ -11,6 +11,7 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="./loadActivities.js"></script>
+    <script src="./loadActions.js"></script>
     <link rel="stylesheet" href="./common.css">
 
     <script>
@@ -27,8 +28,15 @@
         var scoreRange2 = 80;
         var gameFinished = false;
 
-        function start(){
-            loadActivities();      
+        function start(game){
+            alert(game);
+            if( game = 'game1' ){
+                loadActivities();    
+            }  
+            else{
+                loadActions();    
+            }
+
             weakAreas = new Array();     
             maxCount = activities.length;
             correctAnswers = 0;
@@ -77,9 +85,9 @@
             setScore(score);
         }
 
-        $(document).ready(function () {
-            start();
-        });
+        // $(document).ready(function () {
+        //     start();
+        // });
 
         function nextActivity() {
             var i = Math.floor(Math.random() * activities.length);
@@ -194,12 +202,16 @@
 
 <header>
     <div class="jumbotron text-center">
-        <h1>PMP Process Game</h1>
-        Based on PMBOK 6.0
+        <h1>Project Management Quiz</h1>
+        By M. Vaqqas
+        <!-- <ul>
+            <li><input type="link" onclick="start('game1')" text="Game 1"></input></li>
+            <li><input type="link" onclick="start('game2')" text="Game 2"></input></li>
+        </ul> -->
     </div>
 </header>
 
-<nav>
+<nav>    
     <div class="container-fluid">
         <div class="row">            
             <div class="col-xs-6 text-left">

@@ -5,6 +5,10 @@
     outline: none;
 }
 
+.jumbotron {
+    max-height: 100px;
+} 
+
 .btn.btn-primary.btn-wrong:active{
     color: white;
     background-color: red;
